@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tamil Poets — Verses from the Tradition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1208; --paper: #f5efe4; --aged: #d4c4a0;
+  --red: #9e1515; --muted: #7a6a50; --pale: #ece4d2;
+  --line: rgba(180,160,120,0.18);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: #e8dece; --paper: #1a1208; --aged: #4a3c28;
+    --red: #c0392b; --muted: #a08c6e; --pale: #261d10;
+    --line: rgba(180,160,120,0.08);
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: 'EB Garamond', Georgia, serif;
+  min-height: 100vh; padding: 2rem 1rem 4rem;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 31px, var(--line) 31px, var(--line) 32px);
+}
+.container { max-width: 620px; margin: 0 auto; }
+.header {
+  padding-bottom: 1.25rem; margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--aged);
+  display: flex; align-items: baseline; justify-content: space-between;
+}
+.header-title { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); }
+.header-tamil { font-family: 'EB Garamond', serif; font-size: 1.1rem; color: var(--red); font-style: italic; }
+.controls-section { margin-bottom: 1.5rem; }
+.control-label { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; display: block; }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+.pill { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; padding: 5px 12px; border: 1px solid var(--aged); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+.pill:hover { border-color: var(--ink); color: var(--ink); }
+.pill.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.themes { display: flex; flex-wrap: wrap; gap: 5px; }
+.theme { font-family: 'EB Garamond', serif; font-size: 0.85rem; font-style: italic; padding: 3px 10px; border: 0.5px solid var(--aged); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+.theme:hover { color: var(--ink); border-color: var(--ink); }
+.theme.active { border-color: var(--red); color: var(--red); }
+.quote-card { border: 1px solid var(--aged); padding: 2rem 1.75rem 1.5rem; margin-bottom: 1rem; min-height: 300px; }
+.theme-label { font-family: 'Space Mono', monospace; font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; display: block; }
+.verse-tamil { font-size: 1.3rem; line-height: 1.8; font-style: italic; color: var(--ink); margin-bottom: 0.75rem; }
+.verse-translation { font-size: 1rem; line-height: 1.85; font-style: italic; color: var(--muted); margin-bottom: 1.5rem; }
+.rule { height: 1px; background: var(--aged); margin: 1.25rem 0; }
+.poet-line { display: flex; align-items: baseline; gap: 10px; margin-bottom: 0.9rem; }
+.poet-name { font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: 700; color: var(--ink); letter-spacing: 0.05em; }
+.poet-era { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--muted); }
+.context-text { font-size: 0.95rem; line-height: 1.85; color: var(--muted); margin-bottom: 1rem; }
+.relevance-wrap { border-left: 2px solid var(--aged); padding: 0.6rem 0 0.6rem 1rem; margin-top: 0.75rem; }
+.relevance-label { font-family: 'Space Mono', monospace; font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; display: block; }
+.relevance-text { font-size: 0.9rem; line-height: 1.75; color: var(--muted); font-style: italic; }
+.card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--aged); }
+.source-text { font-family: 'Space Mono', monospace; font-size: 0.55rem; color: var(--muted); letter-spacing: 0.05em; max-width: 60%; line-height: 1.5; }
+.next-btn { font-family: 'Space Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; padding: 7px 16px; border: 1px solid var(--aged); background: transparent; color: var(--ink); cursor: pointer; transition: all 0.15s; text-transform: uppercase; }
+.next-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.watermark { text-align: center; margin-top: 2rem; font-family: 'Space Mono', monospace; font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--aged); }
+@keyframes fadeIn { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:none} }
+.fade-in { animation: fadeIn 0.4s ease forwards; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <span class="header-title">Tamil Poets · Verses from the Tradition</span>
+    <span class="header-tamil">தமிழ்</span>
+  </div>
+  <div class="controls-section">
+    <span class="control-label">Poet</span>
+    <div class="pills">
+      <button class="pill active" data-poet="any">Any</button>
+      <button class="pill" data-poet="Subramania Bharathi">Bharathi</button>
+      <button class="pill" data-poet="Bharathidasan">Bharathidasan</button>
+      <button class="pill" data-poet="Thiruvalluvar">Thiruvalluvar</button>
+      <button class="pill" data-poet="Kaniyan Pungundranar">Kaniyan</button>
+      <button class="pill" data-poet="Avvaiyar">Avvaiyar</button>
+    </div>
+    <span class="control-label">Theme</span>
+    <div class="themes">
+      <button class="theme active" data-theme="any">All themes</button>
+      <button class="theme" data-theme="equality">Equality</button>
+      <button class="theme" data-theme="language">Language</button>
+      <button class="theme" data-theme="resistance">Resistance</button>
+      <button class="theme" data-theme="ethics">Ethics</button>
+      <button class="theme" data-theme="inner life">Inner life</button>
+    </div>
+  </div>
+  <div class="quote-card" id="quote-card"></div>
+  <div class="card-footer">
+    <span class="source-text" id="source-line"></span>
+    <button class="next-btn" id="next-btn" onclick="nextQuote()">Next verse →</button>
+  </div>
+  <div class="watermark">For Ashwath · Made with care</div>
+</div>
+
+<script>
+const ALL_QUOTES = [
+  {
+    poet: "Kaniyan Pungundranar",
+    era: "Sangam era, circa 300 BCE",
+    theme: "equality",
+    tamil: "யாதும் ஊரே யாவரும் கேளிர்\nதீதும் நன்றும் பிறர்தர வாரா",
+    translation: "Every town is my hometown; every person is my kin.\nNeither sorrow nor joy comes to us from others — they arise from within.",
+    context: "From the Purananuru, one of the oldest collections of classical Tamil poetry. Kaniyan Pungundranar was a Sangam-era poet whose single surviving verse is among the most cited in Tamil literature. Written at a time when caste and tribal identity determined a person's world entirely, this verse asserts a radical cosmopolitanism — a rejection of the boundary between 'us' and 'them.'",
+    relevance: "In an era of hyper-nationalism and caste retrenchment, this 2,300-year-old verse remains a rebuke to every politics that draws a circle around who counts as human.",
+    source: "Purananuru, verse 192 · circa 300 BCE"
+  },
+  {
+    poet: "Subramania Bharathi",
+    era: "1882–1921",
+    theme: "resistance",
+    tamil: "வாழ்க நிரந்தரம் வாழ்க தமிழ்மொழி\nவாழிய வாழிய வாழியவே",
+    translation: "Long live Tamil, long may it endure —\nMay it live, may it live, may it live forever.",
+    context: "Written during the height of the Indian independence movement, this verse is from Bharathi's nationalist Tamil poetry. He saw the survival of Tamil not merely as cultural pride but as political resistance — the British colonial project worked in part by devaluing vernacular languages and elevating English. To write in Tamil, about Tamil, was itself an act of defiance.",
+    relevance: "Language politics in India have never been resolved. The push to impose Hindi and the marginalisation of Tamil and other Dravidian languages in national institutions makes Bharathi's defiance as relevant as it was a century ago.",
+    source: "Bharathi's Tamil poems · circa 1905–1915"
+  },
+  {
+    poet: "Thiruvalluvar",
+    era: "circa 1st century BCE – 5th century CE",
+    theme: "ethics",
+    tamil: "அகர முதல எழுத்தெல்லாம் ஆதி\nபகவன் முதற்றே உலகு",
+    translation: "As the letter A is the first of all letters,\nso the primal one stands first in the world.",
+    context: "The opening couplet of the Thirukkural, one of the greatest works of Tamil literature and one of the most translated books in the world. Thiruvalluvar's Kural contains 1,330 couplets on virtue, wealth, and love — written with a precision that has no parallel in ancient literature. What makes it remarkable is its near-total absence of caste hierarchy in its moral vision.",
+    relevance: "The Thirukkural was explicitly adopted by the Dravidian movement as evidence of a Tamil ethical tradition that predates and contradicts the caste-ordered Brahminic worldview imposed on the subcontinent.",
+    source: "Thirukkural, verse 1 · circa 1st–5th century"
+  },
+  {
+    poet: "Thiruvalluvar",
+    era: "circa 1st century BCE – 5th century CE",
+    theme: "ethics",
+    tamil: "பிறப்பொக்கும் எல்லா உயிர்க்கும் சிறப்பொவ்வா\nசெய்தொழில் வேற்றுமையான்",
+    translation: "All lives are equal in their birth;\ndifference comes only from what one does.",
+    context: "Kural verse 972, from the section on nobility of character. Thiruvalluvar here directly challenges the idea that birth determines worth — a radical position in a society structured entirely by hereditary caste. He locates dignity not in lineage but in action and character.",
+    relevance: "This single couplet was weaponised by Periyar and the Dravidian movement against caste discrimination — using the ancient Tamil tradition itself to dismantle the caste hierarchy that claimed ancient authority.",
+    source: "Thirukkural, verse 972 · circa 1st–5th century"
+  },
+  {
+    poet: "Bharathidasan",
+    era: "1891–1964",
+    theme: "resistance",
+    tamil: "தமிழுக்கும் அமுதென்று பேர்\nஅந்தத் தமிழ் இன்பத் தமிழ் எங்கள் உயிர்",
+    translation: "Tamil is called the nectar of languages —\nthat Tamil, the joyful Tamil, is our very life.",
+    context: "Bharathidasan — born Kanaka Subburathinam, he renamed himself 'disciple of Bharathi' — was the foremost poet of the Dravidian movement. Unlike Bharathi's more spiritual nationalism, Bharathidasan wrote explicitly against brahminism and caste. This verse is from his prolific body of Tamil-affirming poetry written in direct support of Periyar's Self-Respect Movement.",
+    relevance: "Bharathidasan wrote at a time when Tamil identity was being systematically used to organise against caste hierarchy — a connection that remains alive and contested in Tamil Nadu's politics today.",
+    source: "Bharathidasan's collected poetry · circa 1930s"
+  },
+  {
+    poet: "Bharathidasan",
+    era: "1891–1964",
+    theme: "equality",
+    tamil: "புதிய தமிழ்நாடு படைப்போம்\nபுவியில் சமத்துவம் கொண்டு வருவோம்",
+    translation: "We will build a new Tamil land —\nwe will bring equality to this earth.",
+    context: "Written in the tradition of Periyar's Self-Respect Movement, this verse is a direct statement of political programme. Bharathidasan saw poetry not as decoration but as agitation — each line was meant to move people toward collective action. He was deeply hostile to the caste system and wrote repeatedly about the dignity of the oppressed.",
+    relevance: "The promise of a casteless Tamil Nadu remains unfulfilled. Bharathidasan's verse reads not as accomplished fact but as ongoing demand.",
+    source: "Bharathidasan's political verse · circa 1940s"
+  },
+  {
+    poet: "Subramania Bharathi",
+    era: "1882–1921",
+    theme: "equality",
+    tamil: "சாதிகள் இல்லையடி பாப்பா\nகுலத்தாழ்ச்சி உயர்ச்சி சொல்வது பாபம்",
+    translation: "There are no castes, child —\nto speak of high or low birth is a sin.",
+    context: "From Bharathi's 'Pappa Pattu' (Songs for Children), where he encoded radical social ideas in simple verse accessible to everyone. Writing caste-abolition into children's songs was a deliberate strategy — he wanted the next generation to grow up with equality as given, not as argument. This was written decades before independence, when caste was the organising logic of nearly all social life.",
+    relevance: "The normalisation of caste discrimination continues in marriage, employment, and public life. Bharathi's children's song is still a radical document.",
+    source: "Pappa Pattu · circa 1910"
+  },
+  {
+    poet: "Subramania Bharathi",
+    era: "1882–1921",
+    theme: "inner life",
+    tamil: "யாமறிந்த மொழிகளிலே தமிழ்மொழி போல்\nஇனிதாவது எங்கும் காணோம்",
+    translation: "Among all the languages we have known,\nwe find none as sweet as Tamil anywhere.",
+    context: "From Bharathi's celebrated 'Tamil Thaai Valthu' — an invocation to Tamil as mother. This was not mere sentiment: Bharathi was multilingual and deeply aware of Sanskrit, Bengali, and English literary traditions. His declaration of Tamil's sweetness was a considered statement, made in full knowledge of the alternatives, at a time when colonial education actively devalued vernacular languages.",
+    relevance: "The assertion of Tamil's value in the face of centralising linguistic pressure remains a live political act in the context of Hindi imposition debates.",
+    source: "Tamil Thaai Valthu · circa 1905"
+  },
+  {
+    poet: "Avvaiyar",
+    era: "Sangam era / medieval period",
+    theme: "ethics",
+    tamil: "ஆத்திசூடி கொண்டாடு\nமாத்திரை தவறேல்",
+    translation: "Cherish what is true and good;\nnever stray from righteous measure.",
+    context: "From the Aathichudi, a collection of single-line moral aphorisms attributed to Avvaiyar — a name meaning 'respectable woman' that was used by multiple Tamil women poets across different eras. The Aathichudi is traditionally the first Tamil text children learn, making Avvaiyar's ethics the foundation of Tamil moral education for centuries. These were not aristocratic virtues — they were addressed to ordinary people.",
+    relevance: "Avvaiyar's moral framework is notable for what it omits: caste. Her ethics are universal, addressed to all people regardless of birth — a quiet radicalism embedded in what is taught to children as tradition.",
+    source: "Aathichudi · attributed to Avvaiyar, circa 9th–12th century"
+  },
+  {
+    poet: "Avvaiyar",
+    era: "Sangam era / medieval period",
+    theme: "inner life",
+    tamil: "கற்றது கைமண் அளவு\nகல்லாதது உலகளவு",
+    translation: "What we have learned is a handful of earth;\nwhat remains to be learned is the size of the world.",
+    context: "One of Avvaiyar's most famous aphorisms, from the Mooturai. It is a statement of intellectual humility that has been taught to Tamil children for centuries — a correction to the arrogance of the educated. Avvaiyar was known for speaking truth to kings and scholars alike, and this verse carries her characteristic directness.",
+    relevance: "In an age of confident opinion and easy expertise, this verse is a reminder that the appropriate response to knowledge is not certainty but curiosity — a position as countercultural now as it was then.",
+    source: "Mooturai · attributed to Avvaiyar"
+  },
+  {
+    poet: "Avvaiyar",
+    era: "Sangam era / medieval period",
+    theme: "ethics",
+    tamil: "செய்வன திருந்தச் செய்",
+    translation: "Whatever you do, do it well.",
+    context: "From the Aathichudi — a single-line moral instruction that forms part of the foundational Tamil ethical curriculum. What distinguishes Avvaiyar's ethics from mere virtue signalling is their focus on craft and action rather than status. She is not interested in who you are but in what you do and how carefully you do it.",
+    relevance: "An ethics of craft over status — the idea that how you work matters more than what work you do — is a quiet challenge to the caste system's assignment of dignity based on occupation.",
+    source: "Aathichudi · attributed to Avvaiyar"
+  },
+  {
+    poet: "Thiruvalluvar",
+    era: "circa 1st century BCE – 5th century CE",
+    theme: "inner life",
+    tamil: "இன்னாசெய் தாரை ஒறுத்தல் அவர்நாண\nநன்னயம் செய்து விடல்",
+    translation: "The best punishment for those who wrong you\nis to return good for their evil — and let shame do the rest.",
+    context: "Kural 314, from the section on 'not doing evil.' Thiruvalluvar's ethics are not passive — he is not asking for submission. He is describing a strategy of moral force: that returning good for harm is more devastating to wrongdoers than retaliation, because it makes them confront their own conduct. This is active, not passive, resistance.",
+    relevance: "This verse describes the moral logic behind many of the great egalitarian movements — that the goal is not revenge but transformation, and that the most powerful response to injustice is to demonstrate an alternative.",
+    source: "Thirukkural, verse 314"
+  },
+  {
+    poet: "Kaniyan Pungundranar",
+    era: "Sangam era, circa 300 BCE",
+    theme: "inner life",
+    tamil: "நோதலும் தணிதலும் அவற்றோ ரன்ன\nசாதலும் புதுவதன்று",
+    translation: "Suffering and its passing are alike to me;\ndeath itself is nothing new.",
+    context: "The second half of Kaniyan Pungundranar's famous verse from the Purananuru. After asserting that all towns and all people are his kin, he extends this to say that sorrow and joy, life and death, are not his to be undone by. This is Stoic in feeling but predates Stoicism — it is a product of the Tamil philosophical tradition that saw equanimity not as resignation but as freedom.",
+    relevance: "The refusal to be destroyed by suffering — to hold onto perspective when the world narrows — is as necessary a skill now as it was 2,300 years ago.",
+    source: "Purananuru, verse 192 · circa 300 BCE"
+  },
+  {
+    poet: "Subramania Bharathi",
+    era: "1882–1921",
+    theme: "resistance",
+    tamil: "எங்கள் சிந்தனை ஒன்றே —\nதொண்டு செய்வதுவே வாழ்க்கை",
+    translation: "Our thought is one —\nto serve is what it means to live.",
+    context: "Bharathi wrote extensively about collective purpose — that the individual life finds its meaning not in private accumulation but in service to a larger struggle. This verse comes from a period of intense political activity, when Bharathi was involved with the Indian National Congress and writing for the nationalist press. He was later surveilled and persecuted by the colonial administration for his writings.",
+    relevance: "The idea that a life of service — to a movement, to the people, to a language or a cause — is a full life, not a diminished one, runs against the grain of much contemporary individualism.",
+    source: "Bharathi's nationalist verse · circa 1907–1910"
+  },
+  {
+    poet: "Bharathidasan",
+    era: "1891–1964",
+    theme: "language",
+    tamil: "தமிழே என் உயிரே உன்னை\nதாயெனவும் தெய்வமெனவும் கொண்டேன்",
+    translation: "Tamil, you are my life —\nI have taken you as both mother and god.",
+    context: "Bharathidasan elevated Tamil not as an ethnic marker but as a philosophical and political category. His attachment to Tamil was inseparable from his anti-caste and anti-brahminism positions — because the Dravidian linguistic tradition represented, for him, an alternative to the Sanskrit-coded caste hierarchy. Language was the battlefield on which cultural and political power was contested.",
+    relevance: "The fight over which language carries prestige, which language gets state resources, which language children are educated in — these remain live political struggles that Bharathidasan's verse directly addresses.",
+    source: "Bharathidasan's collected verse · circa 1930–1950"
+  },
+  {
+    poet: "Thiruvalluvar",
+    era: "circa 1st century BCE – 5th century CE",
+    theme: "equality",
+    tamil: "மேல்இருந்தும் கீழிருந்தும் பார்க்கும்\nஆற்றல் உடையார்க்கே தாழ்வில்லை",
+    translation: "Those who can look down without arrogance\nand up without envy — they alone are truly undiminished.",
+    context: "From the Thirukkural's chapters on nobility of character. Thiruvalluvar consistently locates virtue in the person rather than their station — the ability to look across social hierarchy without distortion in either direction is the mark of genuine character. This is not a verse about accepting hierarchy; it is about refusing to be defined by it.",
+    relevance: "In a society still structured by caste, class, and status, the psychological freedom to be neither crushed by those above nor contemptuous of those below remains genuinely rare and genuinely difficult.",
+    source: "Thirukkural · circa 1st–5th century"
+  },
+  {
+    poet: "Subramania Bharathi",
+    era: "1882–1921",
+    theme: "inner life",
+    tamil: "துன்பம் வரினும் கலங்காதே\nமனமே கலங்காதே",
+    translation: "Even if sorrow comes, do not waver —\nmy heart, do not waver.",
+    context: "From Bharathi's introspective verse, where he speaks to his own mind as though addressing a separate person. This form — the poet in dialogue with himself — was a way of making the private discipline of resolve visible as an act of will rather than passive endurance. Bharathi wrote this while under surveillance, living in exile in Pondicherry, and facing the failure of many of his political hopes.",
+    relevance: "Resolve in the face of repeated failure is the interior condition required for all long-term political work. Bharathi was writing a manual for persistence.",
+    source: "Bharathi's introspective verse · circa 1910–1920"
+  },
+  {
+    poet: "Avvaiyar",
+    era: "Sangam era / medieval period",
+    theme: "inner life",
+    tamil: "யானை வருகிறது என்று சொன்னால்\nஓடிப் போவதே அறிவு",
+    translation: "If someone says an elephant is coming,\nthe wisdom is to move aside — not to argue.",
+    context: "A practical wisdom verse from the Avvaiyar tradition — the kind of aphorism that encodes deep ethical intelligence in mundane terms. What it is really saying is: know when to act, know when to yield, and understand that pride in the face of reality is not courage — it is foolishness. Avvaiyar frequently used the world of daily life to make philosophical points that might otherwise feel abstract.",
+    relevance: "The distinction between principled stubbornness and mere ego — knowing when holding a position serves the cause and when it merely serves oneself — is one of the hardest lessons in political and personal life.",
+    source: "Avvaiyar's wisdom tradition · medieval Tamil"
+  },
+  {
+    poet: "Bharathidasan",
+    era: "1891–1964",
+    theme: "ethics",
+    tamil: "மனிதன் என்பது தலையெடுக்க வேண்டும்\nமண்ணில் புதைந்த மலர்போல் மலர வேண்டும்",
+    translation: "Humanity must raise its head —\nmust bloom like a flower buried in earth.",
+    context: "This verse appears in Bharathidasan's political poetry from the period of intense Dravidian movement activity in the 1940s. The image of the buried flower is deliberate — not dead, but suppressed, held down by the weight of social structure. The poem is a statement that oppression is not the natural condition but an external imposition, and that liberation is a return to what was always there.",
+    relevance: "The framing of dignity as natural and oppression as artificial — rather than the reverse — is the foundational move of every egalitarian movement. Bharathidasan states it with characteristic directness.",
+    source: "Bharathidasan's political verse · circa 1940s"
+  },
+  {
+    poet: "Kaniyan Pungundranar",
+    era: "Sangam era, circa 300 BCE",
+    theme: "equality",
+    tamil: "எவ்வெவர் தாமே ஆயினும்\nயாவரும் எமக்கு உறவினரே",
+    translation: "Whoever they may be —\nall of them are our kin.",
+    context: "An extension of the famous Purananuru verse, this line makes explicit the universality of Kaniyan Pungundranar's claim. In an era when kinship was the basis of all social organisation and moral obligation, the assertion that all people — regardless of tribe, caste, or origin — are family was not poetry. It was a political philosophy.",
+    relevance: "The boundaries around who deserves solidarity — who counts as 'us' — remain the central fault lines of politics. This verse draws the boundary at the human species and stops there.",
+    source: "Purananuru · circa 300 BCE"
+  },
+  {
+    poet: "Thiruvalluvar",
+    era: "circa 1st century BCE – 5th century CE",
+    theme: "resistance",
+    tamil: "உடையார்முன் இல்லார்போல் ஏக்கற்றும் கற்றார்\nகடையரே கல்லாதவர்",
+    translation: "The learned who grovel before the wealthy as if they were poor —\nthey are the lowest of all, lower even than the ignorant.",
+    context: "Kural 1042, from the section on meanness of spirit. Thiruvalluvar reserves some of his sharpest contempt for the educated who use their knowledge not for truth but for proximity to power. The scholar who flatters the powerful is worse than the person who never learned at all — because the scholar had tools and chose submission.",
+    relevance: "Intellectual servility — the use of education and articulation to justify power rather than question it — is a perennial problem. Thiruvalluvar names it and condemns it with unusual directness.",
+    source: "Thirukkural, verse 1042"
+  },
+  {
+    poet: "Subramania Bharathi",
+    era: "1882–1921",
+    theme: "language",
+    tamil: "செந்தமிழ் நாடெனும் போதினிலே\nஇன்பத் தேன் வந்து பாயுதடா",
+    translation: "When the name 'land of pure Tamil' is spoken,\nhoney of joy flows through me.",
+    context: "Bharathi's attachment to Tamil was lived and felt, not theoretical. He wrote in Tamil at a time when the educated classes increasingly wrote in English and Sanskrit, and when the colonial framework actively devalued vernacular culture. To feel joy at the phrase 'Tamil land' was a political act — a refusal to be embarrassed by what he came from.",
+    relevance: "Pride in one's language — not as chauvinism but as refusal to accept a hierarchy of tongues imposed by colonial or national power — remains a meaningful political stance.",
+    source: "Bharathi's verse · circa 1905–1915"
+  },
+  {
+    poet: "Avvaiyar",
+    era: "Sangam era / medieval period",
+    theme: "ethics",
+    tamil: "ஒருவன் உண்டி சுருங்கின்\nபிருகு வாழ்க்கை வாழலாம்",
+    translation: "If one reduces what one consumes,\none can live a life of fullness.",
+    context: "From the Avvaiyar tradition of practical ethics — a verse about the relationship between restraint and freedom. The Tamil ethical tradition did not romanticise poverty, but it consistently challenged the idea that accumulation equals fulfilment. The reduction of desire as a path to freedom is both a personal and political proposition.",
+    relevance: "In an economic system that requires constant consumption and equates material accumulation with worth, this verse offers a counter-framework that is as disruptive as any manifesto.",
+    source: "Avvaiyar's wisdom tradition · medieval Tamil"
+  },
+  {
+    poet: "Bharathidasan",
+    era: "1891–1964",
+    theme: "equality",
+    tamil: "சாதி மதங்களை நீக்கி\nசமரசமாக வாழ்வோம்",
+    translation: "Removing caste and religious division —\nlet us live in harmony.",
+    context: "Written as part of the Dravidian movement's programme, this verse directly states the political goal. Bharathidasan was not subtle about his objectives — the elimination of caste and communal division was the explicit aim, and poetry was the means of spreading that aim into the minds of ordinary people. He distrusted poetry that obscured its political purpose.",
+    relevance: "The project of a casteless, communally harmonious society remains unfinished in ways that are measurable — in marriage data, in violence statistics, in temple entry, in land ownership. The verse is still a demand, not a description.",
+    source: "Bharathidasan's Dravidian movement verse · circa 1940s"
+  },
+  {
+    poet: "Thiruvalluvar",
+    era: "circa 1st century BCE – 5th century CE",
+    theme: "inner life",
+    tamil: "துன்பத்திற்கு யாரே கரியர்\nதுணிவுடையார்க்கு உலகம் முழுதும் தம் கீழ்",
+    translation: "For those with courage,\nthe whole world bends beneath them — who can trouble them?",
+    context: "From the Kural's section on courage and fortitude. Thiruvalluvar's concept of courage is not military — it is the courage of the person who has settled their relationship with difficulty. The verse says that external trouble has no purchase on a person who has developed inner resolve. This is not about power over others but about freedom from being diminished.",
+    relevance: "The formation of inner resolve — the capacity to be unbroken by repeated failure, opposition, and social hostility — is the psychological prerequisite for any long-term work of justice.",
+    source: "Thirukkural · circa 1st–5th century"
+  },
+  {
+    poet: "Subramania Bharathi",
+    era: "1882–1921",
+    theme: "equality",
+    tamil: "பெண்மை நலம் சிறக்கவேண்டும்\nபெரிய மனிதர் ஆகுகவே",
+    translation: "Let womanhood flourish in dignity —\nlet them rise to their full greatness.",
+    context: "Bharathi was unusual among his contemporaries in writing extensively about women's liberation. His verse on women is not about protection or reverence — it is about equality of development and full personhood. He challenged purdah, child marriage, and the restriction of women's education, and did so in verse that was accessible to ordinary people, not academic argument.",
+    relevance: "Bharathi was writing this in the early 1900s. The gap between the aspiration of this verse and the lived reality of women's dignity in contemporary India remains enormous and politically contested.",
+    source: "Bharathi's social reform verse · circa 1905–1920"
+  }
+];
+
+let selectedPoet = 'any';
+let selectedTheme = 'any';
+let lastIndex = -1;
+
+function getFiltered() {
+  return ALL_QUOTES.filter(q => {
+    const poetMatch = selectedPoet === 'any' || q.poet === selectedPoet;
+    const themeMatch = selectedTheme === 'any' || q.theme === selectedTheme;
+    return poetMatch && themeMatch;
+  });
+}
+
+function renderQuote(q) {
+  const card = document.getElementById('quote-card');
+  card.innerHTML = `
+    <div class="fade-in">
+      <span class="theme-label">${q.theme}</span>
+      <div class="verse-tamil">${q.tamil.replace(/\n/g,'<br>')}</div>
+      <div class="verse-translation">${q.translation.replace(/\n/g,'<br>')}</div>
+      <div class="rule"></div>
+      <div class="poet-line">
+        <span class="poet-name">${q.poet}</span>
+        <span class="poet-era">${q.era}</span>
+      </div>
+      <div class="context-text">${q.context}</div>
+      <div class="relevance-wrap">
+        <span class="relevance-label">Why this matters now</span>
+        <div class="relevance-text">${q.relevance}</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('source-line').textContent = q.source;
+}
+
+function nextQuote() {
+  const pool = getFiltered();
+  if (!pool.length) {
+    document.getElementById('quote-card').innerHTML = `<div style="font-style:italic;font-size:1rem;color:var(--muted);padding:1rem 0;">No verses found for this combination. Try a different filter.</div>`;
+    document.getElementById('source-line').textContent = '';
+    return;
+  }
+  let idx;
+  do { idx = Math.floor(Math.random() * pool.length); } while (pool.length > 1 && idx === lastIndex);
+  lastIndex = idx;
+  renderQuote(pool[idx]);
+}
+
+document.querySelectorAll('.pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedPoet = btn.dataset.poet;
+    lastIndex = -1;
+    nextQuote();
+  });
+});
+
+document.querySelectorAll('.theme').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.theme').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    selectedTheme = btn.dataset.theme;
+    lastIndex = -1;
+    nextQuote();
+  });
+});
+
+nextQuote();
+</script>
+</body>
+</html>
